@@ -9,9 +9,9 @@
   } else if (input.includes("helpline number") ||input.includes("helpline")) {
     output = "Our helpline number is : "+"<a href='tel:9855213456'>" + "9855213456" + "</a>";
   } else if (input.includes("how to register?")||input.includes("sign up")) {
-    output = "To sign up please click on "+ "Sign Up".link("http://localhost/arp/signup.html");
+    output = "To sign up please click on "+ "Sign Up".link("http://localhost/arp/login.php");
   } else if (input.includes("how to Log In?")||input.includes("log in")) {
-    output = "To log in please click on "+ "Log In".link("http://localhost/arp/login.html");
+    output = "To log in please click on "+ "Log In".link("http://localhost/arp/login.php");
   }
   else if (input.includes("what to do when i face ragging?")) {
 

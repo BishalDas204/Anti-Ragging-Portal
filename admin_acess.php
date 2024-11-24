@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['email'])){  
-  header("Location:http://localhost/arp/admin_logout.php");
+  header("Location:admin_logout.php");
 }
 ?>
 <!DOCTYPE html>
@@ -25,7 +25,13 @@ if(!isset($_SESSION['email'])){
             border-radius: 4px;
             color: white;
         }
-
+        .status{
+            background-color: #28a745;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+        }
         .navbar {
             background-color: #007bff;
             padding: 10px 20px;
@@ -107,6 +113,11 @@ if(!isset($_SESSION['email'])){
         <div>
         <form action="admin_acess.php" method="post">
             <button class="btn" style="background-color: #28a745;" type="submit" name="all">View All Students</button>
+        </form>
+        </div>
+        <div>
+        <form action="admin_acess.php" method="post">
+            <button class="btn" style="background-color: #28a745;" type="submit" name="report">View Reports</button>
         </form>
         </div>
         <div class="search-bar">
@@ -196,5 +207,143 @@ if (isset($_POST['all'])){
     echo '</table>';
 }
 }
+?>
+<?php
+// report
+if (isset($_POST['report'])){
+    include 'dbconnect.php';
+    $sql="select * from report";
+    $query=mysqli_query($conn,$sql);
+    $i=(mysqli_num_rows($query));
+    include 'close_button.html';
+    if($i==0){
+        echo "<br><center> No data found </center><br>";
+    }
+    else{
+        echo '
+        <h2 style="text-align: center;">Report Details</h2>
+        <div class="student-details" id="studentDetails">
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Report ID</th>
+                        <th>Reporter Name</th>
+                        <th>Reporter Mail</th>
+                        <th>Reporter College</th>
+                        <th>Course of Reporter</th>
+                        <th>Semester number of Reporter</th>
+                        <th>Reporter Roll</th>
+                        <th>Report</th>
+                        <th>Accuser Name</th>
+                        <th>Accuser College</th>
+                        <th>Course of Accuser</th>
+                        <th>Semester number of Accuser</th>
+                        <th>Accuser Roll</th>
+                        <th>Report Update Time</th>
+                        <th>Report Status</th>
+                    </tr>
+                </thead>';
+    while($i!=0) {
+        $data=mysqli_fetch_assoc($query);
+       echo '<tr>
+        <td>'.$data["r_id"].'</td>
+        <td>'.$data["r_name"].'</td>
+        <td>'.$data["r_mail"].'</td>
+        <td>'.$data["r_college"].'</td>
+        <td>'.$data["r_course"].'</td>
+        <td>'.$data["r_sem"].'</td>
+        <td>'.$data["r_roll"].'</td>
+        <td>'.$data["r_msg"].'</td>
+        <td>'.$data["a_name"].'</td>
+        <td>'.$data["a_college"].'</td>
+        <td>'.$data["a_course"].'</td>
+        <td>'.$data["a_sem"].'</td>
+        <td>'.$data["a_roll"].'</td>
+        <td>'.$data["r_date"].'</td>
+        <td>
+        <form action="admin_acess.php" method="post">
+            <button class="status" type="submit" name="sta" value=" '.$data["r_id"].' ">'.$data["sta"].'</button>
+        </form>
+        </td>
+    </tr>';
+        $i--;
+    }
+    echo '</table>';
+}
+}
+// status change
+if (isset($_POST['sta'])) {
+    $rid=$_POST['sta'];
+    include 'dbconnect.php';
+    $sql="select sta from report where r_id=$rid";
+    $query=mysqli_query($conn,$sql);
+    $data=mysqli_fetch_assoc($query);
+    $sta=$data['sta'];
+    if ($sta=="Unsolved") {
+        $sta="Solved";
+        $sql="UPDATE `report` SET `sta` = '$sta' WHERE `report`.`r_id` = $rid";
+        $query=mysqli_query($conn,$sql);
+    }
+    else {
+        $sta="Unsolved";
+        $sql="UPDATE `report` SET `sta` = '$sta' WHERE `report`.`r_id` = $rid";
+        $query=mysqli_query($conn,$sql);
+        
+    }
+       // printing table
+    $sql="select * from report";
+    $query=mysqli_query($conn,$sql);
+    $i=(mysqli_num_rows($query));
+    include 'close_button.html';
+    echo '
+        <h2 style="text-align: center;">Report Details</h2>
+        <div class="student-details" id="studentDetails">
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Report ID</th>
+                        <th>Reporter Name</th>
+                        <th>Reporter Mail</th>
+                        <th>Reporter College</th>
+                        <th>Course of Reporter</th>
+                        <th>Semester number of Reporter</th>
+                        <th>Reporter Roll</th>
+                        <th>Report</th>
+                        <th>Accuser Name</th>
+                        <th>Accuser College</th>
+                        <th>Course of Accuser</th>
+                        <th>Semester number of Accuser</th>
+                        <th>Accuser Roll</th>
+                        <th>Report Update Time</th>
+                        <th>Report Status</th>
+                    </tr>
+                </thead>';
+                while($i!=0) {
+                    $data=mysqli_fetch_assoc($query);
+                   echo '<tr>
+                    <td>'.$data["r_id"].'</td>
+                    <td>'.$data["r_name"].'</td>
+                    <td>'.$data["r_mail"].'</td>
+                    <td>'.$data["r_college"].'</td>
+                    <td>'.$data["r_course"].'</td>
+                    <td>'.$data["r_sem"].'</td>
+                    <td>'.$data["r_roll"].'</td>
+                    <td>'.$data["r_msg"].'</td>
+                    <td>'.$data["a_name"].'</td>
+                    <td>'.$data["a_college"].'</td>
+                    <td>'.$data["a_course"].'</td>
+                    <td>'.$data["a_sem"].'</td>
+                    <td>'.$data["a_roll"].'</td>
+                    <td>'.$data["r_date"].'</td>
+                    <td>
+                    <form action="admin_acess.php" method="post">
+                        <button class="status" type="submit" name="sta" value=" '.$data["r_id"].' ">'.$data["sta"].'</button>
+                    </form>
+                    </td>
+                </tr>';
+                    $i--;
+                }
+                echo '</table>';
+    }
 ?>
 </html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - codingnepalweb.com -->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title> Admin Registration </title> 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
@@ -105,22 +106,56 @@ form .text h3 a:hover{
    </head>
 <body>
   <div class="wrapper">
+    <!-- sign up part -->
+<?php
+if (isset($_POST['register'])) {
+    
+ //making connection to database
+ include 'dbconnect.php';
+//take input from the form
+$name=$_POST['name'];
+$email=$_POST['email'];
+$phone=$_POST['phone'];
+$pass_user=$_POST['pass'];
+//password hasing
+$hash=password_hash($pass_user,PASSWORD_DEFAULT);
+  try {
+    //inserting input to database
+    $sql="INSERT INTO `admin` (`name`, `email`, `pn`, `pas`) VALUES ('$name', '$email', '$phone', '$hash')";
+    $insert=mysqli_query($conn, $sql);
+    echo '
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Registration sucessful</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div> ';
+    }
+      
+    //catch exception
+      catch(Exception $e) {
+        echo '
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Registration fail</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> ';
+      }
+}
+ ?>
     <h2>Admin Registration</h2>
-    <form action="#">
+    <form action="admin_signup.php" method="post">
       <div class="input-box">
-        <input type="text" placeholder="Enter your name" required>
+        <input type="text" placeholder="Enter your name" required name="name"> 
       </div>
       <div class="input-box">
-        <input type="text" placeholder="Enter your email" required>
+        <input type="text" placeholder="Enter your email" required name="email">
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Enter your phone number" required>
+        <input type="text" placeholder="Enter your phone number" required name="phone">
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Create password" required>
+        <input type="password" placeholder="Create password" required name="pass">
       </div>
       <div class="input-box button">
-        <input type="Submit" value="Register Now">
+        <input type="Submit" value="Register Now" name="register">
       </div>
       <div class="text">
         <h3>Already have an account? <a href="http://localhost/arp/admin_login.php">Login now</a></h3>

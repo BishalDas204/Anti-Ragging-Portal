@@ -174,7 +174,7 @@ if ($hash_data!=NULL) {
 }
 if ($vpas) {
   //sql query
-$sql="SELECT `name`,`email`,`pn` FROM `students` WHERE `email`='$user'";
+$sql="SELECT `name`,`email`,`pn` FROM `admin` WHERE `email`='$user'";
 $query=mysqli_query($conn, $sql);
 //fetching data from query
 $data=mysqli_fetch_assoc($query);  
@@ -185,7 +185,7 @@ $data=mysqli_fetch_assoc($query);
     header("Location: admin_acess.php");
 }
 else{
-  header("Location: fail.php");
+  header("Location: admin_fail.php");
 }
 }
 ?>

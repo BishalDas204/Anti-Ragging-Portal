@@ -102,6 +102,7 @@ echo'
     $acourse=$_POST['ac'];
     $asem=$_POST['as'];
     $aroll=$_POST['ar'];
+    $sta="Unsolved";
     try {
       $sql="SELECT `r_id` FROM `report`";
       $check_id_no=mysqli_query($conn, $sql);
@@ -132,7 +133,8 @@ echo'
     `a_course`, 
     `a_sem`, 
     `a_roll`,
-    `r_date`
+    `r_date`,
+    `sta`
     ) 
     VALUES (
     '$rid', 
@@ -148,7 +150,8 @@ echo'
     '$acourse',
     '$asem',
     '$aroll',
-    NOW()
+    NOW(),
+    '$sta'
     )";
     // sql query executing
     $insert=mysqli_query($conn, $sql);
@@ -157,6 +160,7 @@ echo'
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
     ';
+    include 'rcount.php';
 }
 catch(Exception $e){
   echo' <div class="alert alert-success alert-dismissible fade show" role="alert">
